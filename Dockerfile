@@ -29,13 +29,15 @@ RUN pip install --no-cache-dir \
     fastapi \
     uvicorn[standard] \
     imageio[ffmpeg] \
-    pydantic
+    pydantic \
+    sentencepiece \
+    protobuf
 
 # Pre-download the LTX Video model (this is the key optimization!)
 # This downloads ~10-20GB but makes subsequent launches instant
-RUN python -c "from diffusers import LTXPipeline; import torch; \
+RUN python -c "from huggingface_hub import snapshot_download; \
     print('Downloading LTX Video model...'); \
-    model = LTXPipeline.from_pretrained('Lightricks/LTX-Video', torch_dtype=torch.bfloat16); \
+    snapshot_download('Lightricks/LTX-Video', local_files_only=False); \
     print('Model downloaded and cached!')"
 
 # Copy server script
