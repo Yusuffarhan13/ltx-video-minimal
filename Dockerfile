@@ -33,12 +33,8 @@ RUN pip install --no-cache-dir \
     sentencepiece \
     protobuf
 
-# Pre-download the LTX Video model (this is the key optimization!)
-# This downloads ~10-20GB but makes subsequent launches instant
-RUN python -c "from huggingface_hub import snapshot_download; \
-    print('Downloading LTX Video model...'); \
-    snapshot_download('Lightricks/LTX-Video', local_files_only=False); \
-    print('Model downloaded and cached!')"
+# Note: Model will be downloaded on first container run (~10-20GB)
+# This keeps Docker build fast. Model downloads to /root/.cache/huggingface
 
 # Copy server script
 COPY ltx_video_server.py .
