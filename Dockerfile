@@ -1,12 +1,22 @@
 FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-runtime
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Install system dependencies
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive TZ=Asia/Colombo apt-get install -y \
+    python3.10 \
+    python3-pip \
     git \
     wget \
     curl \
     ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    libgomp1 \
+    tzdata && \
+    rm -rf /var/lib/apt/lists/*
+
 
 # Set working directory
 WORKDIR /workspace/app
